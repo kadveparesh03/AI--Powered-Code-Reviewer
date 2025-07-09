@@ -3,8 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_KEY);
 const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
-    systemInstruction: 
-    `
+    systemInstruction: `
                 Here’s a solid system instruction for your AI code reviewer:
 
                 AI System Instruction: Senior Code Reviewer (7+ Years of Experience)
@@ -77,31 +76,17 @@ const model = genAI.getGenerativeModel({
                 Your mission is to ensure every piece of code follows high standards. Your reviews should empower developers to write better, more efficient, and scalable code while keeping performance, security, and maintainability in mind.
 
                 Would you like any adjustments based on your specific needs? 🚀 
-    
     `
 });
 
+
 async function generateContent(prompt) {
-    try {
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+    const result = await model.generateContent(prompt);
 
-        // ✅ Return structured response
-        return {
-            code: 200,
-            message: "AI content generated successfully",
-            data: text
-        };
-    } catch (error) {
-        console.error("Error in generateContent:", error);
+    console.log(result.response.text())
 
-        // ✅ Return error response
-        return {
-            code: 500,
-            message: "Failed to generate AI content",
-            error: error.message
-        };
-    }
+    return result.response.text();
+
 }
 
-module.exports = generateContent;
+module.exports = generateContent    
